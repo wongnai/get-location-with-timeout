@@ -16,7 +16,7 @@ yarn add get-location-with-timeout
 ### Usage
 
 ```ts
-import getCurrentLocationWithTimeout, { TiredFromWaitingPromiseResolveTooLongError } from 'get-location-with-timeout'
+import getCurrentLocationWithTimeout, { TimeoutError } from 'get-location-with-timeout'
 
 try {
     const { coords } = await getCurrentLocationWithTimeout()
