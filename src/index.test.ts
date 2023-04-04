@@ -1,6 +1,10 @@
 import getCurrentLocationWithTimeout from "index"
 import { TiredFromWaitingPromiseResolveTooLongError } from "promise-until-tired"
 
+beforeAll(() => {
+    jest.useFakeTimers()
+})
+
 describe('getCurrentLocationWithTimeout()', () => {
     const MOCK_RESPONSE = {
         coords: {
@@ -8,11 +12,9 @@ describe('getCurrentLocationWithTimeout()', () => {
             longitude: 45.3
         }
     }
-
     const MOCK_REJECT_RESPONSE = new Error('reject')
-
     const mockGetCurrentPosition = jest.fn()
-    
+
     beforeAll(() => {
         Object.defineProperty(window, 'navigator', {
             value: {
@@ -25,6 +27,7 @@ describe('getCurrentLocationWithTimeout()', () => {
 
     afterEach(() => {
         mockGetCurrentPosition.mockClear()
+        jest.clearAllTimers()
     })
 
     describe('geolocation resolve after timeout', () => {
@@ -33,6 +36,7 @@ describe('getCurrentLocationWithTimeout()', () => {
                 setTimeout(() => {
                     resolve(MOCK_RESPONSE)
                 }, 50000)
+                jest.runAllTimers()
             })
         })
 
@@ -51,6 +55,7 @@ describe('getCurrentLocationWithTimeout()', () => {
                 setTimeout(() => {
                     reject(MOCK_REJECT_RESPONSE)
                 }, 50000)
+                jest.runAllTimers()
             })
         })
 
@@ -69,6 +74,7 @@ describe('getCurrentLocationWithTimeout()', () => {
                 setTimeout(() => {
                     resolve(MOCK_RESPONSE)
                 }, 500)
+                jest.runAllTimers()
             })
         })
 
@@ -87,6 +93,7 @@ describe('getCurrentLocationWithTimeout()', () => {
                 setTimeout(() => {
                     reject(MOCK_REJECT_RESPONSE)
                 }, 500)
+                jest.runAllTimers()
             })
         })
 
