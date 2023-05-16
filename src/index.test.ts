@@ -1,10 +1,6 @@
 import getCurrentLocationWithTimeout from "index"
 import { TiredFromWaitingPromiseResolveTooLongError } from "promise-until-tired"
 
-beforeAll(() => {
-    jest.useFakeTimers()
-})
-
 describe('getCurrentLocationWithTimeout()', () => {
     const MOCK_RESPONSE = {
         coords: {
@@ -16,6 +12,7 @@ describe('getCurrentLocationWithTimeout()', () => {
     const mockGetCurrentPosition = jest.fn()
 
     beforeAll(() => {
+        jest.useFakeTimers()
         Object.defineProperty(window, 'navigator', {
             value: {
                 geolocation: {
